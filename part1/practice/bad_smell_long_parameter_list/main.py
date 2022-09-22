@@ -11,40 +11,36 @@
 
 
 class Unit:
-    def move(self, field, x_coord, y_coord, direction, is_fly, crawl, speed = 1):
+    def __init__(self,x_coord, y_coord, direction, state, speed):
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+        self.direction = direction
+        self.state = state
+        self.speed = speed
+    def move(self, field):
+        speed = self._get_speed()
 
-        if is_fly and crawl:
-            raise ValueError('Рожденный ползать летать не должен!')
+        if self.direction == 'UP':
+            new_y = self.y_coord + speed
+            new_x = self.x_coord
+        elif self.direction == 'DOWN':
+            new_y = self.y_coord - speed
+            new_x = self.x_coord
+        elif self.direction == 'LEFT':
+            new_y = self.y_coord
+            new_x = self.x_coord - speed
+        elif self.direction == 'RIGTH':
+            new_y = self.y_coord
+            new_x = self.x_coord + speed
 
-        if is_fly:
-            speed *= 1.2
-            if direction == 'UP':
-                new_y = y_coord + speed
-                new_x = x_coord
-            elif direction == 'DOWN':
-                new_y = y_coord - speed
-                new_x = x_coord
-            elif direction == 'LEFT':
-                new_y = y_coord
-                new_x = x_coord - speed
-            elif direction == 'RIGTH':
-                new_y = y_coord
-                new_x = x_coord + speed
-        if crawl:
-            speed *= 0.5
-            if direction == 'UP':
-                new_y = y_coord + speed
-                new_x = x_coord
-            elif direction == 'DOWN':
-                new_y = y_coord - speed
-                new_x = x_coord
-            elif direction == 'LEFT':
-                new_y = y_coord
-                new_x = x_coord - speed
-            elif direction == 'RIGTH':
-                new_y = y_coord
-                new_x = x_coord + speed
+        field.set_unit(x=new_x, y=new_y, unit=self)
 
-            field.set_unit(x=new_x, y=new_y, unit=self)
+    def _get_speed(self):
+        if self.state == "fly":
+            return sleff.speed * 1.2
+        elif self.state == "crawl":
+            return sleff.speed * 0.5
+        else:
+            raise ValueError("косячина")
 
 #     ...
